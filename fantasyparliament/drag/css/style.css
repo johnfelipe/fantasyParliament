@@ -1,0 +1,58 @@
+.foot{
+	background-image : url('../img/foot1.jpg');
+	background-repeat:no-repeat;
+	width:  450px ;
+	height: 640px ;
+	padding : 25px;
+	float: left;
+	
+}
+.square {
+    width: 100px;
+    height: 160px;
+    line-height: 80px;
+    border: 1px solid black;
+   
+    cursor: pointer;
+    
+}
+.players{
+	float: left; 
+	width: 400px; 
+	height: 600px;
+	 border: 1px solid black;
+	 text-align: center ; 
+}
+
+.player{
+	display: inline-block;
+	
+
+}
+.name{
+	display : none;
+}
+.player > img {
+	height: 70px;
+	width : 70px ;
+}
+
+
+.ligne {
+	text-align : center;
+	
+}
+
+.carre{
+	display: inline-block;
+	width: 75px;
+	height : 75px;
+	border: 1px solid black;
+	margin: 25px 15px;
+}
+.player-names{
+
+	font-size: 0.7em;
+
+	
+}
