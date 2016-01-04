@@ -3,6 +3,7 @@ session_start();
 // added in v4.0.0
 require_once 'autoload.php';
 require 'functions.php';
+
 use Facebook\FacebookSession;
 use Facebook\FacebookRedirectLoginHelper;
 use Facebook\FacebookRequest;
@@ -26,6 +27,7 @@ try {
   // When validation fails or other local issues
 }
 // see if we have a session
+
 if ( isset( $session ) ) {
   // graph api request for user data
   $request = new FacebookRequest( $session, 'GET', '/me' );
@@ -33,14 +35,16 @@ if ( isset( $session ) ) {
   // get response
   $graphObject = $response->getGraphObject();
      	$fbid = $graphObject->getProperty('id');              // To Get Facebook ID
- 	    $fbfullname = $graphObject->getProperty('name'); // To Get Facebook full name
-	    $femail = $graphObject->getProperty('email');    // To Get Facebook email ID
+ 	$fbfullname = $graphObject->getProperty('name'); // To Get Facebook full name
+	$femail = $graphObject->getProperty('email');    // To Get Facebook email ID
 	
      /* Add to database */
+
 	checkuser($fbid,$fbfullname,$femail); // To update local DB 
+
     /* ---- Session Variables -----*/
 	    $_SESSION['FBID'] = $fbid;
-        $_SESSION['FULLNAME'] = $fbfullname;
+       	    $_SESSION['FULLNAME'] = $fbfullname;
 	    $_SESSION['EMAIL'] =  $femail;
     /* ---- header location after session ----*/
   header("Location: index.php");

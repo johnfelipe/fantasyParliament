@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,17 +56,26 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="index.html">
-
-					</a>
+										
+					<ul class="nav navbar-nav navbar-left">
+					<?php if ($_SESSION['FBID']): ?>
+					  <li><img src="https://graph.facebook.com/<?php echo $_SESSION['FBID']; ?>/picture" style="margin-top:Opx;"/> </li>
+					   <li><a> Hello <?php echo $_SESSION['FULLNAME']; ?></a></li>
+					</ul>
 				</div>
 
 				<div class="collapse navbar-collapse" id="custom-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="index.html">Home</a></li>
-
-                        <li><a href="#">Login</a></li>
+						<li><a href="index.php">Home</a></li> 
+ 						<li><a href="logout.php">Logout</a></li>
+						<?php else:
+						 header('Location: http://fantasyparliament.akramrekik.com/index.php');
+						?>
+						<li><a href="index.php">Home</a></li> 
+						<li><a href="fbconfig.php">Connect</a></li>
+						<?php endif; ?>
 					</ul>
+				</div>
 				</div>
 
 			</div><!-- .container -->
@@ -129,19 +141,19 @@
             <div class="row">
                
             <?php  
-          
-                $res = mysql_query('SELECT * FROM Equipe WHERE id="1"') or die(mysql_error());
+            $req = 'SELECT * FROM Equipe WHERE user = "'.$_SESSION['FBID'].'"' ; 
+                $res = mysql_query($req) or die(mysql_error());
                 $data =mysql_fetch_row($res);
-                $team = $data[2];
+                $team = $data[3];
                 $players = explode(',', $team);
-                
                 for ($i=0; $i < 11 ; $i++) { 
                   # code...
                 $result = mysql_query('SELECT * FROM Depute WHERE id = "'.$players[$i].'"') or die(mysql_error());
-                $player = mysql_fetch_array($result); ?>
+                $player = mysql_fetch_array($result);
+                ?>
                 <div class="panel panel-default col-md-1 player">
 		            <div class="panel-body">
-    			        <img src="<?php echo 'assets/img/'.$players[$i]; ?>.jpg" width=100% class="img_player">
+    			        <img src="<?php echo 'images/'.$players[$i]; ?>.png" width=100% class="img_player">
   		            </div>
   		        <div class="panel-footer"><strong class="note-deputee"> <?php echo -2*$player['r1']+3*$player['r2']+5*$player['r3']+$player['r4']+2*$player['r5']+$player['r6']?> </strong></div>
 	            </div>
@@ -170,48 +182,14 @@
 
    <thead>
       <tr>
+	<th>Rank</th>
          <th>Name</th>
-         <th>User</th>
          <th>Score</th>
       </tr>
    </thead>
 
    <tbody>
-      <tr>
-         <td>Winners</td>
-         <td>mostfa46</td>
-         <td>560001</td>
-      </tr>
-
-      <tr>
-         <td>Nouwab</td>
-         <td>lamia</td>
-         <td>400003</td>
-      </tr>
-
-      <tr>
-         <td>taraji</td>
-         <td>khaled1919</td>
-         <td>311027</td>
-      </tr>
-
-         <tr>
-         <td>Nahdha2</td>
-         <td>Malek</td>
-         <td>200001</td>
-      </tr>
-
-         <tr>
-         <td>NIDA</td>
-         <td>SAFA_Lahmar</td>
-         <td>145457</td>
-      </tr>
-
-         <tr>
-         <td>FARI9</td>
-         <td>SLIM46</td>
-         <td>90000</td>
-      </tr>
+   <?php require 'includes/top_teams.php';  ?>
    </tbody>
 
 </table><br><br>
@@ -251,6 +229,9 @@
 		</div><!-- .container -->
 	</footer>
 
+
+               
+
 	<!-- Footer end -->
 
 	<!-- Scroll to top -->
@@ -275,8 +256,28 @@
     <script src="assets/js/jquery.cbpQTRotator.js"></script>
 	<script src="assets/js/custom.js"></script>
     <script>
+<?php
+
+$idp=$_SESSION['FBID'];
+$scoors = mysql_query("SELECT score FROM `equipe_history` WHERE user='$idp'");
+$weeks = mysql_query("SELECT week FROM `equipe_history` WHERE user='$idp'");
+$scores = "";
+while($scoor = mysql_fetch_assoc($scoors)){
+	$scores = $scores.$scoor['score'].',';
+	
+}
+$weeeks = "";
+while($week = mysql_fetch_assoc($weeks)){
+	$weeeks = $weeeks.'"'.$week['week'].'",';
+	
+}
+?>
+var scoors = [<?php echo $scores; ?>];
+var weeks = [<?php echo $weeeks; ?>];
+
    var lineChartData = {
-             labels: ["week1", "week2", "week3"],
+   		
+             labels: weeks,
              datasets: [{
                  label: "My Second dataset",
                  fillColor: "rgba(151,187,205,0.2)",
@@ -285,7 +286,7 @@
                  pointStrokeColor: "#fff",
                  pointHighlightFill: "#fff",
                  pointHighlightStroke: "rgba(151,187,205,1)",
-                 data: [20, 10, 30]
+                 data: scoors
              }]
          }
 
@@ -303,63 +304,20 @@
     </script>
 
     <script>
-        var data = [
-    {
-        value: 20,
-        color:"#FF0000",
-        highlight: "#FF0000",
-        label: "My team"
-    },
-    {
-        value: 50,
-        color: "#58ACFA",
-        highlight: "#58ACFA",
-        label: "3rd"
-    },
-    {
-        value: 70,
-        color: "#58FA82",
-        highlight: "#58FA82",
-        label: "2nd"
-    },
-    {
-        value: 100,
-        color: "#D0FA58",
-        highlight: "#D0FA58",
-        label: "1st"
-    }
-
-];
+    var data = [
+  	<?php require 'includes/team_chart.php';  ?>
+	];
 
     var ctx = document.getElementById("canvas2").getContext("2d");
     window.myLine = new Chart(ctx).PolarArea(data, options);
-
-
     </script>
 
+
+
     <script>
-
     var data = [
-    {
-        value: 20,
-        color:"#F7464A",
-        highlight: "#FF5A5E",
-        label: "Mourad"
-    },
-    {
-        value: 30,
-        color: "#46BFBD",
-        highlight: "#5AD3D1",
-        label: "Mohamed"
-    },
-    {
-        value: 35,
-        color: "#FDB45C",
-        highlight: "#FFC870",
-        label: "Basma"
-    }
-]
-
+    	<?php require 'includes/deputes_chart.php';  ?>
+	]
 
     var ctx = document.getElementById("canvas1").getContext("2d");
     window.myPieChart = new Chart(ctx).Pie(data,options);

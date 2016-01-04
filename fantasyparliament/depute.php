@@ -1,7 +1,10 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<?php require 'admin/dbconfig.php' ?>
+	<?php require 'admin/dbconfig.php' ; ?>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
@@ -29,7 +32,7 @@
    
     url: 'up.php',
     data: { 
-        'id': 1, 
+        'id': <?php echo $_GET['id'] ?>, 
          
     },
     success: function(){
@@ -45,7 +48,7 @@ $.ajax({
     
     url: 'down.php',
     data: { 
-        'id': 1, 
+        'id': <?php echo $_GET['id'] ?>, 
         
     },
     success: function(){
@@ -92,16 +95,27 @@ $.ajax({
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="index.html">
-					<img src="assets/images/logoAkram.png" width="35%">
-					</a>
+
+					
+					<ul class="nav navbar-nav navbar-left">
+					<?php if ($_SESSION['FBID']): ?>
+					  <li><img src="https://graph.facebook.com/<?php echo $_SESSION['FBID']; ?>/picture" style="margin-top:Opx;"/> </li>
+					   <li><a> Hello <?php echo $_SESSION['FULLNAME']; ?></a></li>
+					</ul>
 				</div>
 
 				<div class="collapse navbar-collapse" id="custom-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#home">Home</a></li>
-						<li><a href="#app">App</a></li>
-                        <li><a href="#">Login</a></li>
+						<li><a href="index.php">Home</a></li> 
+ 
+ <li><a href="logout.php">Logout</a></li>
+ <?php else:
+  header('Location: http://fantasyparliament.akramrekik.com/index.php');
+
+ ?>
+ <li><a href="index.php">Home</a></li> 
+ <li><a href="fbconfig.php">Connect</a></li>
+ <?php endif; ?>
 					</ul>
 				</div>
 
@@ -120,13 +134,13 @@ $.ajax({
 
 			<div class="row" style="margin-top:5%">
                 <div class="col-md-4 text-center">
-									<img width="30%"  src="assets/img/1.jpg"/>
+									<img width="30%"  src="images/<?php echo $_GET['id']; ?>.png"/>
                 </div>
                 <div class="col-md-4">
-                <?php $res = mysql_query('SELECT top FROM top_flop WHERE id="'.$_POST['id']);
+                <?php $res = mysql_query('SELECT top FROM top_flop WHERE id="'.$_GET['id'].'"');
 $rows =mysql_fetch_row($res);
 $top = $rows[0]; 
-$res = mysql_query('SELECT flop FROM top_flop WHERE id="'.$_POST['id']);
+$res = mysql_query('SELECT flop FROM top_flop WHERE id="'.$_GET['id'].'"');
 $rows =mysql_fetch_row($res);
 $flop = $rows[0] ; ?>
 									<div class="row">
@@ -244,16 +258,16 @@ $flop = $rows[0] ; ?>
 
     var data = [
     {
-        value: 20,
+        value: <?php echo $top ?>,
         color:"#F7464A",
         highlight: "#FF5A5E",
-        label: "Mourad"
+        label: "TOP"
     },
     {
-        value: 30,
+        value: <?php echo $flop ?>,
         color: "#46BFBD",
         highlight: "#5AD3D1",
-        label: "Mohamed"
+        label: "FLOP"
     }
 ]
      var options = {

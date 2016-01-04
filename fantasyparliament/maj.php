@@ -7,8 +7,9 @@ define('DB_DATABASE', 'watchIntegrity');      // DB name
 $connection = mysql_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD) or die("Unable to connect");
 $database = mysql_select_db(DB_DATABASE) or die( "Unable to select database");
 
-echo $_POST['ch']; 
-mysql_query('INSERT INTO Equipe VAlUES ('1','0',"'.$_POST['ch'].'")') or die(mysql_error());
-header('location : detail.php');
+echo 'hi'.$_POST['ch']; 
+$req = 'INSERT INTO Equipe VAlUES ("","'.$_POST['name'].'","0","'.$_POST['ch'].'","'.$_POST['idfb'].'")' ; 
+mysql_query($req) or die(mysql_error());
+
 
 ?>

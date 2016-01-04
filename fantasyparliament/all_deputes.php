@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,13 +10,16 @@
 	<meta name="author" content="">
 
 	<title>FantasyParliament</title>
-
+<?php require 'admin/dbconfig.php' ; ?>
 	<!-- CSS -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link href="assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
 	<link href="assets/css/simple-line-icons.css" rel="stylesheet" media="screen">
 	<link href="assets/css/animate.css" rel="stylesheet">
     <script src="assets/js/Chart.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
 	<!-- Custom styles CSS -->
 	<link href="assets/css/style.css" rel="stylesheet" media="screen">
@@ -21,7 +27,11 @@
 	<link rel="shortcut icon" href="assets/icons/iconAkram.png">
 
     <script src="assets/js/modernizr.custom.js"></script>
+<script type="text/javascript">
+  
 
+
+</script>
 </head>
 <body>
 
@@ -52,17 +62,26 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="index.html">
-
-					</a>
+										
+					<ul class="nav navbar-nav navbar-left">
+					<?php if ($_SESSION['FBID']): ?>
+					  <li><img src="https://graph.facebook.com/<?php echo $_SESSION['FBID']; ?>/picture" style="margin-top:Opx;"/> </li>
+					   <li><a> Hello <?php echo $_SESSION['FULLNAME']; ?></a></li>
+					</ul>
 				</div>
 
 				<div class="collapse navbar-collapse" id="custom-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="index.html">Home</a></li>
-
-                        <li><a href="#">Login</a></li>
+						<li><a href="index.php">Home</a></li> 
+ 						<li><a href="logout.php">Logout</a></li>
+						<?php else:
+						 header('Location: http://fantasyparliament.akramrekik.com/index.php');
+						?>
+						<li><a href="index.php">Home</a></li> 
+						<li><a href="fbconfig.php">Connect</a></li>
+						<?php endif; ?>
 					</ul>
+				</div>
 				</div>
 
 			</div><!-- .container -->
@@ -95,159 +114,22 @@
 			</div>
 
             <div class="row">
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/1.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
 
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/2.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
+            <?php $result = mysql_query('SELECT * FROM Depute');
+                  while ($data = mysql_fetch_array($result)) { 
+                    $score = -1*$data['r1'] + 2*$data['r1'] + 2*$data['r1'] + 4*$data['r1'] + 5*$data['r1'] + $data['r1'] ;
+                    ?>
+                        <div class="panel panel-default col-md-1 player">
+                        <a href="depute.php?id=<?php echo $data['id'];?>">
+                <div class="panel-body">
+                  <img src="images/<?php echo $data['id']; ?>.png" width=100% class="img_player">
+                  </div> </a>
+              <div class="panel-footer"><strong class="note-deputee"><?php echo $score ?></strong></div>
+              </div>
+               <?php   }
+             ?>
+              
 
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/3.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/4.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/5.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/6.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/7.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/8.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/9.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/10.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/11.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/3.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/7.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/5.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/1.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/2.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/8.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/11.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/10.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/7.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/9.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
-
-                <div class="panel panel-default col-md-1 player">
-		            <div class="panel-body">
-    			        <img src="assets/img/5.jpg" width=100% class="img_player">
-  		            </div>
-  		        <div class="panel-footer"><strong class="note-deputee">+20</strong></div>
-	            </div>
 
 			</div><!-- .row -->
 

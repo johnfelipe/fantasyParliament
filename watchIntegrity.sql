@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Mar 29 Décembre 2015 à 16:21
+-- Généré le: Lun 04 Janvier 2016 à 08:27
 -- Version du serveur: 5.5.45-cll-lve
 -- Version de PHP: 5.4.31
 
@@ -45,12 +45,12 @@ CREATE TABLE IF NOT EXISTS `Depute` (
 INSERT INTO `Depute` (`id`, `nom`, `r1`, `r2`, `r3`, `r4`, `r5`, `r6`) VALUES
 (1, 'Samia Abbou', 1, 2, 5, 6, 5, 1),
 (2, 'Badreddine Abdelkefi', 1, 5, 4, 4, 7, 1),
-(3, 'Abir Abdelli', 0, 0, 0, 0, 0, 0),
-(4, 'Asma Abou Hana', 0, 0, 0, 0, 0, 0),
-(5, 'Mohamed Anouar Adhar', 0, 0, 0, 0, 0, 0),
-(6, 'Oussama Al Saghir', 0, 0, 0, 0, 0, 0),
-(7, 'Lotfi Ali', 0, 0, 0, 0, 0, 0),
-(8, 'Aymen Aloui', 0, 0, 0, 0, 0, 0),
+(3, 'Abir Abdelli', 0, 4, 0, 0, 0, 0),
+(4, 'Asma Abou Hana', 0, 0, 2, 0, 0, 0),
+(5, 'Mohamed Anouar Adhar', 0, 0, 3, 0, 0, 0),
+(6, 'Oussama Al Saghir', 0, 5, 0, 0, 0, 7),
+(7, 'Lotfi Ali', 0, 0, 2, 0, 0, 0),
+(8, 'Aymen Aloui', 0, 0, 0, 0, 1, 0),
 (9, 'Souhail Alouini', 0, 0, 0, 0, 0, 0),
 (10, 'Nizar Amami', 0, 0, 0, 0, 0, 0),
 (11, 'Ahmed Ameri', 0, 0, 0, 0, 0, 0),
@@ -314,17 +314,29 @@ INSERT INTO `depute_history` (`id`, `nom`, `week`, `r1`, `r2`, `r3`, `r4`, `r5`,
 --
 
 CREATE TABLE IF NOT EXISTS `Equipe` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
   `score` int(11) NOT NULL,
-  `deputes` varchar(255) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `deputes` varchar(100) NOT NULL,
+  `user` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Contenu de la table `Equipe`
 --
 
-INSERT INTO `Equipe` (`id`, `score`, `deputes`) VALUES
-(1, 0, '1,2,3,4,5,6,7,8,9,10,11');
+INSERT INTO `Equipe` (`id`, `name`, `score`, `deputes`, `user`) VALUES
+(1, 'alfariq', 100, '1,2,3,4,5,6,7,8,9,10,11', '1'),
+(3, 'ossec_hackers', 150, '10,155,12,14,19,85,45,25,34,10', '2'),
+(5, 'loosers', 20, '1,45,12,25,75,95,12,3,5,9,8', '3'),
+(7, 'hello', 0, '1,9,33,25,17,41,26,34,42,49,50', '2147483647'),
+(8, '', 0, '', '2147483647'),
+(9, 'vik', 0, '33,41,50,42,34,35,10,9,27,19,43', '2147483647'),
+(10, 'vik', 0, '33,41,50,42,34,35,10,9,27,19,43', '2147483647'),
+(11, 'mop', 0, '1,9,33,47,54,49,41,17,25,26,34', '2147483647'),
+(12, 'mmmpmm', 0, '1,9,54,41,49,33,35,17,25,34,50', '2147483647'),
+(13, 'mmmpmm', 0, '1,9,54,41,49,33,35,17,25,34,50', '10208593520941268');
 
 -- --------------------------------------------------------
 
@@ -333,11 +345,21 @@ INSERT INTO `Equipe` (`id`, `score`, `deputes`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `equipe_history` (
-  `id` int(11) NOT NULL,
-  `week` int(11) NOT NULL,
-  `deputes` set('','','','','','','','','','','') NOT NULL,
-  `score` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `equipe` int(11) NOT NULL,
+  `user` varchar(50) NOT NULL,
+  `score` int(11) NOT NULL,
+  `week` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `equipe_history`
+--
+
+INSERT INTO `equipe_history` (`id`, `equipe`, `user`, `score`, `week`) VALUES
+(1, 1, '10208593520941268', 100, 'week1'),
+(2, 1, '10208593520941268', 150, 'week2');
 
 -- --------------------------------------------------------
 
@@ -357,8 +379,8 @@ CREATE TABLE IF NOT EXISTS `top_flop` (
 --
 
 INSERT INTO `top_flop` (`id`, `top`, `flop`) VALUES
-(1, 0, 0),
-(2, 0, 0),
+(1, 5, 4),
+(2, 8, 3),
 (3, 0, 0),
 (4, 0, 0),
 (5, 0, 0),
@@ -587,14 +609,16 @@ CREATE TABLE IF NOT EXISTS `Users` (
   `Ffname` varchar(60) NOT NULL,
   `Femail` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`UID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Contenu de la table `Users`
 --
 
 INSERT INTO `Users` (`UID`, `Fuid`, `Ffname`, `Femail`) VALUES
-(1, '10201591933756231', 'Atef Arfaoui', '');
+(2, '10201591933756231', 'Atef Arfaoui', ''),
+(3, '10208593520941268', 'Hamza Sayadi', ''),
+(4, '1918898874993188', 'Ada Rda', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
